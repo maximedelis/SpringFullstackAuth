@@ -1,4 +1,4 @@
-# Fullstack Authentication
+# Spring Fullstack Authentication
 
 Updated fullstack authentication using Spring Security and Thymeleaf.
 
