@@ -45,14 +45,14 @@ public class WebController {
             return "redirect:/";
         }
 
-        model.addAttribute("registrationForm", new RegistrationForm());
+        model.addAttribute("registrationForm", new RegistrationForm("",""));
         return "register";
     }
 
     @PostMapping("/register")
     public String registerUser(@Valid RegistrationForm registrationForm, BindingResult bindingResult, Model model) {
 
-        if (userService.existsByUsername(registrationForm.getUsername())) {
+        if (userService.existsByUsername(registrationForm.username())) {
             bindingResult.rejectValue("username", "error.user", "An account already exists for this username.");
             return "register";
         }
@@ -61,7 +61,7 @@ public class WebController {
             return "register";
         }
 
-        userService.save(registrationForm.getUsername(), registrationForm.getPassword());
+        userService.save(registrationForm.username(), registrationForm.password());
         model.addAttribute("registered", true);
         return "register";
     }
@@ -72,7 +72,7 @@ public class WebController {
         if (authentication.getPrincipal() instanceof User) {
             return "redirect:/";
         }
-        model.addAttribute("loginForm", new LoginForm());
+        model.addAttribute("loginForm", new LoginForm("",""));
         return "login";
     }
 
@@ -84,7 +84,7 @@ public class WebController {
 
         try {
             Authentication authentication = authenticationManager
-                    .authenticate(new UsernamePasswordAuthenticationToken(loginForm.getUsername(), loginForm.getPassword()));
+                    .authenticate(new UsernamePasswordAuthenticationToken(loginForm.username(), loginForm.password()));
             SecurityContext context = SecurityContextHolder.getContext();
             context.setAuthentication(authentication);
 
